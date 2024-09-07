@@ -1,33 +1,31 @@
 import React from "react";
 import { connect } from "react-redux";
+import {actionUserName} from '../../../config/redux/action'
 class Login extends React.Component {
 
-    state = {
-        email: '',
-        password: ''
+    changeUser = () => {
+        this.props.changeUserName()
     }
-
-    handleValueChange = (e)  => {
-        this.setState({
-            [e.target.id]: e.target.value
-        })
-    }
-
-    handleRegisterButton = () => {
-        console.log(this.state);
-    }
-    render(){
+    render() {
         return (
             <div>
-                <h1>Login Page {this.props.popupProps ? "benar" : "salah"}</h1>
-                <button>Register</button>
+                <h1>Login Page {this.props.userName}</h1>
+                <button onClick={this.changeUser}>Change Name User</button>
                 <button>Dashboard</button>
             </div>
         )
     }
 }
 
+
+
 const reduxState = (state) => ({
-    popupProps: state.popup
+    popupProps: state.popup,
+    userName: state.user
 })
-export default connect(reduxState, null)(Login);
+const reduxdispatch = (dispatch) => ({
+    changeUserName: () => {
+        dispatch(actionUserName())
+    }
+})
+export default connect(reduxState, reduxdispatch)(Login);
