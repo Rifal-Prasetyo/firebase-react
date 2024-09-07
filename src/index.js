@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import App from './container/pages/App';
 import reportWebVitals from './reportWebVitals';
+import firebase, {analytics} from './config/firebase';
 
+console.log("config firebase ===>", firebase);
+console.log('anaylytics firebase ==> ', analytics );
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
