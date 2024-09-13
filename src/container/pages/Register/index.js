@@ -1,9 +1,11 @@
 import React from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import Button from "../../../components/atoms/Button";
+import { registerUserAPI } from "../../../config/redux/action";
+import { connect } from "react-redux";
 class Register extends React.Component {
     state = {
         email: '',
-        password: ''
+        password: '',
     }
 
     handleValueChange = (e) => {
@@ -13,19 +15,8 @@ class Register extends React.Component {
     }
 
     handleRegisterButton = () => {
-        console.log(this.state);
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, this.state.email, this.state.password)
-            .then((userCredential) => {
-                // Signed up 
-                console.log(userCredential);
-            })
-            .catch((error) => {
-                console.log(error);
-                // const errorCode = error.code;
-                // const errorMessage = error.message;
-                // ..
-            });
+       const {email, password} = this.state;
+       this.props.registerAPI({email, password});
     }
     render() {
         return (
@@ -33,10 +24,18 @@ class Register extends React.Component {
                 <h1>Register Page</h1>
                 <input type="text" name="email" id="email" placeholder="Email" onChange={this.handleValueChange} />
                 <input type="password" name="password" id="password" placeholder="Password" onChange={this.handleValueChange} />
-                <button onClick={this.handleRegisterButton}>Register</button>
+                {/* <button onClick={this.handleRegisterButton}>Register</button> */}
+                <Button onClick={this.handleRegisterButton} title={'Register'} loading={this.props.isLoading}/>
             </div>
         )
     }
 }
 
-export default Register;
+const reduxState = (state) => ({
+    isLoading: state.isLoading
+})
+
+const reduxDispatch = (dispatch) => ({
+    registerAPI: (data) => dispatch(registerUserAPI(data))
+})
+export default connect(reduxState, reduxDispatch)(Register);
